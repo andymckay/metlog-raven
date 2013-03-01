@@ -81,7 +81,8 @@ class RavenClient(Client):
 
         # raven adds a 'public_key' field which breaks sentry for some
         # reason
-        del data['public_key']
+        if 'public_key' in data:
+            del data['public_key']
 
         message = self.encode(data)
 
@@ -134,7 +135,7 @@ def config_plugin(config):
 
     default_logger = config.pop('logger', None)
     default_severity = config.pop('severity', SEVERITY.ERROR)
-    
+
     # This argument is deprecated.  Please use the dsn from now on.
     sentry_project_id = config.pop("sentry_project_id", None)
 
